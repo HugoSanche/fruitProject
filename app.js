@@ -1,17 +1,12 @@
+
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost:27017/fruitsDB", {
+mongoose.connect("mongodb://localhost:27017/people", {
   useNewUrlParser: true
 });
 
-// const personSchema=new mongoose.Schema({
-// name:String,
-// age:Number
-// });
 const fruitSchema = new mongoose.Schema({
-  name: {
-    type:String,
-  required: true,"Why not name?"},
+  name: String,
   rating: {
     type:Number, //valida que sea tipo numerico
     min:1,      //valida que el valor minimo sea 1
@@ -20,14 +15,47 @@ const fruitSchema = new mongoose.Schema({
   review: String
 })
 
-const Fruit = mongoose.model("Fruit", fruitSchema);
-//const Person=mongoose.model("Person",personSchema);
-
-const Ciruela = new Fruit({
-  //name: "Ciruela",
-  rating: 10,
-  review: "Acida pero muy rica"
+const personSchema=new mongoose.Schema({
+name:String,
+age:Number,
+favoriteFruit:fruitSchema
 });
+
+
+
+
+const Fruit = mongoose.model("Fruit", fruitSchema);
+const Person=mongoose.model("Person",personSchema);
+
+
+//aggregate a new fruit
+const Pera = new Fruit({
+  name: "Pera",
+  rating: 9,
+  review: "poco dulce"
+});
+
+
+//Update a register whe id =6318c8ed96be98fc4891cc9c
+Person.updateOne({_id:"63194b4fb416577289556796"},{favoriteFruit:'Orange'},function(err){
+  if(err){
+    console.log("the update fail");
+  }
+  else{
+    console.log("The update sucess");
+  }
+});
+
+//del objecto person o tabla people deleted every register in that table
+// Person.deleteMany({},function(err){
+//   if (err)
+//     console.log("Faild Deleted register");
+//   else{
+//     console.log("Deleted register sucessful");
+//   }
+// });
+
+
 
 // const Pera = new Fruit({
 //   name: "Pera",
@@ -50,7 +78,8 @@ const Ciruela = new Fruit({
 //     }
 // });
 
-Ciruela.save();
+//Pera.save();
+//Fruit.save();
 
 // Fruit.find(function(err, fruits) {
 //   if (err) {
@@ -65,13 +94,12 @@ Ciruela.save();
 //   }
 // });
 
+ const person = new Person({
+  name:"Janneth",
+  age:37
+});
 
-// const person = new Person({
-//   name:"John",
-//   age:37
-// });
-
-// person.save();
+//person.save();
 
 const findDocuments = function(db, callback) {
   //Get the documents collection

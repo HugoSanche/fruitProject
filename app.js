@@ -21,30 +21,17 @@ age:Number,
 favoriteFruit:fruitSchema
 });
 
-
-
-
 const Fruit = mongoose.model("Fruit", fruitSchema);
 const Person=mongoose.model("Person",personSchema);
 
 
 //aggregate a new fruit
-const Pera = new Fruit({
-  name: "Pera",
-  rating: 9,
-  review: "poco dulce"
+const Orange = new Fruit({
+  name: "Orange",
+  rating: 10,
+  review: "LA mejor fruta ever"
 });
 
-
-//Update a register whe id =6318c8ed96be98fc4891cc9c
-Person.updateOne({_id:"63194b4fb416577289556796"},{favoriteFruit:'Orange'},function(err){
-  if(err){
-    console.log("the update fail");
-  }
-  else{
-    console.log("The update sucess");
-  }
-});
 
 //del objecto person o tabla people deleted every register in that table
 // Person.deleteMany({},function(err){
@@ -53,8 +40,8 @@ Person.updateOne({_id:"63194b4fb416577289556796"},{favoriteFruit:'Orange'},funct
 //   else{
 //     console.log("Deleted register sucessful");
 //   }
-// });
 
+// });
 
 
 // const Pera = new Fruit({
@@ -69,6 +56,7 @@ Person.updateOne({_id:"63194b4fb416577289556796"},{favoriteFruit:'Orange'},funct
 //   review: "The best fruit in the word"
 // });
 
+//Inserta varios objetos al mismo tiempo
 // Fruit.insertMany([Banana,Pera,Orange], function(err){
 //     if (err){
 //       console.log("Se presento un error");
@@ -78,8 +66,30 @@ Person.updateOne({_id:"63194b4fb416577289556796"},{favoriteFruit:'Orange'},funct
 //     }
 // });
 
-//Pera.save();
+//Orange.save(); //insert Orange fruit
 //Fruit.save();
+
+updatePeopleFruit("Hugo","Orange");
+//Actualiza la fruta de una persona, por ejemplo a "Hugo" le gusta la fruta "Orange"
+function updatePeopleFruit(namePerson,nameFruit){
+  Fruit.findOne({name:nameFruit},function(err, fruits) { //busca una fruta llamamda nameFruit
+    if (err) {
+      console.log("Ups something happens!");
+    } else {
+          //Update a register whe id =6318c8ed96be98fc4891cc9c
+          Person.updateOne({name:namePerson},{favoriteFruit:fruits},function(err){ //update favoriteFruit a Person called namePerson
+            if(err){
+              console.log("the update fail"+err);
+            }
+            else{
+              // console.log(namePerson,nameFruit);
+              console.log("The update sucess");
+            }
+          });
+        }
+      });
+}
+
 
 // Fruit.find(function(err, fruits) {
 //   if (err) {
@@ -87,19 +97,20 @@ Person.updateOne({_id:"63194b4fb416577289556796"},{favoriteFruit:'Orange'},funct
 //   } else {
 //     //Al ejecutarse callback el arreglo fruits ya tiene todos los elementos, no se debe cerrar despues Del
 //     //foreach porque te imaginas si tendria que iterar 1 millon de veces? se cerraria despues de la iteracion
-//     mongoose.connection.close();
+//   //  mongoose.connection.close();
 //     fruits.forEach((item, i, x) => {
 //       console.log(item.name);
 //     });
 //   }
 // });
 
- const person = new Person({
-  name:"Janneth",
-  age:37
-});
-
-//person.save();
+//  const person = new Person({
+//   name:"Hugo",
+//   age:39,
+//   favoriteFruit:Manzana
+// });
+//
+// person.save();
 
 const findDocuments = function(db, callback) {
   //Get the documents collection
